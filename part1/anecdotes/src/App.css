@@ -6,9 +6,9 @@ div .btn {
   border: none;
   border-radius: 5px;
   cursor: pointer;
+  user-select: none;
 }
 div .btn:hover {
   background-color: rgb(155, 155, 155);
   color: #fff;
 }
-
