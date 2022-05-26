@@ -4,6 +4,7 @@ import "./App.css";
 const Weather = ({ city }) => {
   const [weatherData, setWeatherData] = useState({});
   useEffect(() => {
+    //API key already deactivated
     if (city)
       axios
         .get(
