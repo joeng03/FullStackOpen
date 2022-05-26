@@ -1,0 +1,12 @@
+.searchbar {
+  margin: 10px;
+}
+div div li {
+  margin: 5px;
+}
+div div li button {
+  margin-left: 10px;
+}
+div div li div {
+  display: none;
+}

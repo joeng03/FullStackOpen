@@ -1,0 +1,11 @@
+.success {
+  color: rgb(0, 152, 0);
+  border: 2px solid rgb(0, 152, 0);
+}
+.failure {
+  color: rgb(255, 42, 42);
+  border: 2px solid rgb(255, 42, 42);
+}
+div li button {
+  margin-left: 5px;
+}
