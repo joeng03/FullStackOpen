@@ -1,5 +1,5 @@
 import axios from "axios";
-const baseUrl = "persons/api";
+const baseUrl = "api/persons";
 
 const create = (newObj) => axios.post(baseUrl, newObj).then((res) => res.data);
 

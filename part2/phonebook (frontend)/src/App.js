@@ -6,11 +6,7 @@ const Header = ({ showHeader }) => {
   if (status === null) return null;
 
   return (
-    <h1 className={status}>
-      {status === "success"
-        ? `Added ${msg}`
-        : `Information of ${msg} has already been removed from server`}
-    </h1>
+    <h1 className={status}>{status === "success" ? `Added ${msg}` : msg}</h1>
   );
 };
 const Filter = ({ searchVal, updateSearchVal }) => {
@@ -72,13 +68,9 @@ const App = () => {
   const [newName, setNewName] = useState("");
   const [newNum, setNewNum] = useState("");
   const [searchVal, setSearchVal] = useState("");
-  const [curID, setCurID] = useState(0);
-  /* the curID state is used as a simple method to prevent ID collisions 
-  after deletions and insertions. Unique ID generators could also be used  */
 
   useEffect(() => {
     phonebookService.read("").then((dat) => {
-      setCurID(dat.length);
       setPersons(dat);
     });
   }, []);
@@ -107,7 +99,7 @@ const App = () => {
   const addPerson = (e) => {
     e.preventDefault();
     const newPerson = persons.find((person) => person.name === newName);
-    if (newPerson) {
+    if (newName && newNum && newPerson) {
       if (
         window.confirm(
           `${newName} is already added to phonebook, replace the old number with a new one?`
@@ -129,8 +121,9 @@ const App = () => {
             )
           )
           .catch((err) => {
+            console.log(err.response.data);
             updateHeader({
-              msg: newName,
+              msg: err.response.data.error,
               status: "failure",
             });
             setPersons(persons.filter((person) => person.id !== newPerson.id));
@@ -140,20 +133,24 @@ const App = () => {
       const personObj = {
         name: newName,
         number: newNum,
-        id: curID,
         show: true,
       };
       phonebookService
         .create(personObj)
-        .then((dat) => setPersons(persons.concat(dat)));
-      updateHeader({
-        msg: newName,
-        status: "success",
-      });
+        .then((dat) => {
+          setPersons(persons.concat(dat));
+          updateHeader({
+            msg: newName,
+            status: "success",
+          });
+        })
+        .catch((err) => {
+          console.log(err.response.data);
+          updateHeader({ msg: err.response.data.error, status: "failure" });
+        });
     }
     setNewName("");
     setNewNum("");
-    setCurID(curID + 1);
   };
   const deletePerson = (curPerson) => {
     if (window.confirm(`Delete ${curPerson.name}?`))
