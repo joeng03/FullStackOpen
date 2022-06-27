@@ -3,8 +3,8 @@ const jwt = require("jsonwebtoken");
 
 const userExtractor = (request, response, next) => {
   const authString = request.get("authorization");
-  if (!authString) return response.status(401).json({ error: "Missing token" });
-  if (authString.toLowerCase().startsWith("bearer ")) {
+  //if (!authString) return response.status(401).json({ error: "Missing token" });
+  if (authString && authString.toLowerCase().startsWith("bearer ")) {
     token = authString.substring(7);
     user = jwt.verify(token, process.env.SECRET_KEY);
     request.user = user;
